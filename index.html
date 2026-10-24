@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jasa Editing Video — Pesan & Review</title>
+<meta name="description" content="Pesan jasa editing video. Isi form, editor akan menghubungi lewat WhatsApp untuk diskusi detail dan harga.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1f6; --surface:#ffffff; --ink:#12182b; --muted:#5a6280; --line:#d6dbe8;
+  --brand:#3d4df0; --brand-ink:#ffffff; --playhead:#ff5c47; --ok:#16875a; --err:#c0392b;
+  --track:#dfe4f1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1220; --surface:#171b2e; --ink:#eef0fa; --muted:#9aa2c4; --line:#2a3050;
+    --brand:#7b87ff; --brand-ink:#0f1220; --track:#232843; --ok:#4fd09a; --err:#ff8a7a;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Bricolage Grotesque","DM Sans",sans-serif;line-height:1.1;margin:0;letter-spacing:-.02em}
+a{color:var(--brand)}
+:focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 1.25rem}
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 0}
+.logo{font:800 1.2rem "Bricolage Grotesque",sans-serif;letter-spacing:-.02em}
+.nav-links{display:flex;gap:1.25rem;font-weight:500}
+.nav-links a{color:var(--ink);text-decoration:none}
+.nav-links a:hover{color:var(--brand)}
+
+.hero{padding:3rem 0 4rem}
+.hero h1{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:800;max-width:14ch}
+.hero p{max-width:50ch;color:var(--muted);font-size:1.125rem;margin:1.25rem 0 1.75rem}
+.btn{display:inline-block;background:var(--brand);color:var(--brand-ink);border:0;border-radius:10px;padding:.85rem 1.4rem;font:600 1rem "DM Sans",sans-serif;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.6;cursor:wait}
+
+/* timeline — elemen utama halaman */
+.timeline{margin-top:3rem;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem;position:relative;overflow:hidden}
+.ruler{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);padding:0 .25rem .6rem;font-variant-numeric:tabular-nums}
+.track{height:34px;background:var(--track);border-radius:6px;margin-bottom:8px;position:relative}
+.clip{position:absolute;top:3px;bottom:3px;border-radius:5px;background:var(--brand);opacity:.9;font-size:.72rem;color:var(--brand-ink);padding:0 .5rem;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
+.clip.b{background:var(--ink);opacity:.8;color:var(--bg)}
+.clip.c{background:var(--playhead);opacity:.9;color:#fff}
+.playhead{position:absolute;top:0;bottom:0;left:8%;width:2px;background:var(--playhead);animation:scrub 7s ease-in-out 1 forwards}
+.playhead::before{content:"";position:absolute;top:0;left:-5px;width:12px;height:12px;background:var(--playhead);border-radius:2px 2px 6px 6px}
+@keyframes scrub{from{left:8%}to{left:62%}}
+@media (prefers-reduced-motion: reduce){.playhead{animation:none;left:62%}}
+
+section{padding:3.5rem 0}
+.sec-head{margin-bottom:1.75rem;max-width:56ch}
+.sec-head h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:700}
+.sec-head p{color:var(--muted);margin:.6rem 0 0}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;counter-reset:s;padding:0;list-style:none;margin:0}
+.steps li{counter-increment:s;border-top:2px solid var(--ink);padding-top:.9rem}
+.steps li::before{content:counter(s);font:800 1.6rem "Bricolage Grotesque",sans-serif;color:var(--brand)}
+.steps h3{font-size:1.15rem;margin:.2rem 0 .35rem}
+.steps p{margin:0;color:var(--muted)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem;max-width:640px}
+label{display:block;font-weight:600;margin-bottom:.35rem}
+.hint{font-weight:400;color:var(--muted);font-size:.875rem}
+.field{margin-bottom:1.1rem}
+input,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:.8}
+textarea{min-height:120px;resize:vertical}
+.notice{display:flex;gap:.75rem;background:var(--bg);border-left:4px solid var(--ok);border-radius:8px;padding:.85rem 1rem;margin-bottom:1.25rem;font-size:.95rem}
+.notice strong{display:block}
+.status{margin-top:1rem;font-weight:500;min-height:1.5em}
+.status.ok{color:var(--ok)} .status.err{color:var(--err)}
+.hp{position:absolute;left:-9999px;height:0;overflow:hidden}
+
+.stars{display:flex;gap:.25rem;border:0;padding:0;margin:0}
+.stars input{position:absolute;opacity:0;width:1px;height:1px}
+.stars label{font-size:1.9rem;line-height:1;color:var(--line);cursor:pointer;margin:0;padding:.1rem}
+.stars{flex-direction:row-reverse;justify-content:flex-end}
+.stars input:checked ~ label,.stars label:hover,.stars label:hover ~ label{color:#f5b301}
+.stars input:focus-visible + label{outline:3px solid var(--brand);border-radius:6px}
+
+footer{padding:2.5rem 0 3rem;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);margin-top:2rem}
+@media (max-width:720px){.steps{grid-template-columns:1fr}.nav-links{gap:.9rem;font-size:.95rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Navigasi utama">
+    <div class="logo">Cut&amp;Co.</div>
+    <div class="nav-links"><a href="#pesan">Pesan</a><a href="#review">Review</a></div>
+  </nav>
+
+  <header class="hero">
+    <h1>Video mentah, jadi tontonan rapi.</h1>
+    <p>Ceritakan videonya, editor akan menghubungi lewat WhatsApp untuk membahas detail dan harga. Tanpa akun, tanpa ribet.</p>
+    <a class="btn" href="#pesan">Buat pesanan</a>
+
+    <div class="timeline" aria-hidden="true">
+      <div class="ruler"><span>00:00</span><span>00:15</span><span>00:30</span><span>00:45</span><span>01:00</span></div>
+      <div class="track"><div class="clip" style="left:2%;width:30%">Intro</div><div class="clip b" style="left:34%;width:40%">Footage utama</div><div class="clip" style="left:76%;width:22%">Outro</div></div>
+      <div class="track"><div class="clip b" style="left:2%;width:55%">Musik &amp; sound</div><div class="clip c" style="left:60%;width:38%">Subtitle</div></div>
+      <div class="playhead"></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="alur">
+    <div class="sec-head"><h2 id="alur">Cara kerjanya</h2></div>
+    <ol class="steps">
+      <li><h3>Isi form</h3><p>Tulis nama, nomor WhatsApp, dan request editanmu.</p></li>
+      <li><h3>Editor menghubungi</h3><p>Editor yang mengambil pesananmu akan chat lewat WhatsApp.</p></li>
+      <li><h3>Sepakat &amp; mulai</h3><p>Detail dan harga dibahas bersama, lalu editing dimulai.</p></li>
+    </ol>
+  </section>
+
+  <section id="pesan" aria-labelledby="pesan-h">
+    <div class="sec-head">
+      <h2 id="pesan-h">Form pemesanan</h2>
+      <p>Semakin jelas request-nya, semakin cepat prosesnya.</p>
+    </div>
+    <form class="panel" id="orderForm" novalidate>
+      <div class="notice" role="note"><div><strong>Kamu akan dihubungi lewat WhatsApp</strong>Setelah pesanan diambil, editor akan chat ke nomor yang kamu isi. Pastikan nomornya aktif di WhatsApp.</div></div>
+      <div class="field"><label for="name">Nama</label><input id="name" name="name" maxlength="60" required autocomplete="name" placeholder="Nama kamu"></div>
+      <div class="field"><label for="phone">Nomor WhatsApp</label><input id="phone" name="phone" type="tel" inputmode="tel" required autocomplete="tel" placeholder="08123456789"></div>
+      <div class="field"><label for="request">Request</label><textarea id="request" name="request" maxlength="900" required placeholder="Contoh: Edit video vlog 5 menit, tambah subtitle dan musik santai."></textarea></div>
+      <div class="field"><label for="price">Harga <span class="hint">(opsional)</span></label><input id="price" name="price" maxlength="40" placeholder="Harga bisa ditentukan sama editor nanti"></div>
+      <div class="hp" aria-hidden="true"><label>Jangan diisi<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit">Kirim pesanan</button>
+      <div class="status" role="status" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <section id="review" aria-labelledby="review-h">
+    <div class="sec-head">
+      <h2 id="review-h">Beri review</h2>
+      <p>Pernah pakai jasa ini? Ulasanmu dikirim anonim, tanpa nama dan tanpa nomor.</p>
+    </div>
+    <form class="panel" id="reviewForm" novalidate>
+      <div class="field">
+        <label id="rl">Penilaian</label>
+        <fieldset class="stars" aria-labelledby="rl">
+          <input type="radio" name="rating" id="s5" value="5"><label for="s5" title="5 bintang">★</label>
+          <input type="radio" name="rating" id="s4" value="4"><label for="s4" title="4 bintang">★</label>
+          <input type="radio" name="rating" id="s3" value="3"><label for="s3" title="3 bintang">★</label>
+          <input type="radio" name="rating" id="s2" value="2"><label for="s2" title="2 bintang">★</label>
+          <input type="radio" name="rating" id="s1" value="1"><label for="s1" title="1 bintang">★</label>
+        </fieldset>
+      </div>
+      <div class="field"><label for="text">Ulasan</label><textarea id="text" name="text" maxlength="900" required placeholder="Ceritakan pengalamanmu..."></textarea></div>
+      <div class="hp" aria-hidden="true"><label>Jangan diisi<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit">Kirim review</button>
+      <div class="status" role="status" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <footer>© <span id="yr"></span> Cut&amp;Co. Pesanan diproses lewat WhatsApp.</footer>
+</div>
+
+<script>
+// Ganti dengan URL Cloudflare Worker kamu (lihat README.md)
+const API = "https://editor-orders.editor-hebat.workers.dev";
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+function normalizePhone(v){
+  let d = v.replace(/[^\d+]/g,"").replace(/^\+/,"");
+  if (d.startsWith("0")) d = "62" + d.slice(1);
+  return d;
+}
+function wire(form, path, build, validate){
+  const status = form.querySelector(".status"), btn = form.querySelector("button[type=submit]");
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    status.className = "status";
+    const err = validate(form);
+    if (err){ status.textContent = err; status.classList.add("err"); return; }
+    btn.disabled = true; status.textContent = "Mengirim…";
+    try{
+      const r = await fetch(API + path, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(build(form))});
+      if(!r.ok) throw new Error();
+      form.reset();
+      status.textContent = path === "/order" ? "Pesanan terkirim. Tunggu chat WhatsApp dari editor ya." : "Terima kasih, review kamu sudah terkirim.";
+      status.classList.add("ok");
+    }catch{
+      status.textContent = "Gagal mengirim. Coba lagi sebentar lagi.";
+      status.classList.add("err");
+    }finally{ btn.disabled = false; }
+  });
+}
+wire(document.getElementById("orderForm"), "/order",
+  f => ({name:f.name.value.trim(), phone:normalizePhone(f.phone.value), request:f.request.value.trim(), price:f.price.value.trim(), website:f.website.value}),
+  f => {
+    if(!f.name.value.trim() || !f.request.value.trim()) return "Nama dan request wajib diisi.";
+    const p = normalizePhone(f.phone.value);
+    if(!/^\d{9,15}$/.test(p)) return "Nomor WhatsApp tidak valid.";
+  });
+wire(document.getElementById("reviewForm"), "/review",
+  f => ({rating:Number((f.querySelector("input[name=rating]:checked")||{}).value||0), text:f.text.value.trim(), website:f.website.value}),
+  f => {
+    if(!f.querySelector("input[name=rating]:checked")) return "Pilih jumlah bintang dulu.";
+    if(!f.text.value.trim()) return "Tulis ulasan singkat dulu.";
+  });
+</script>
+</body>
+</html>
